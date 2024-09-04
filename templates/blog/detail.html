@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-6 bg-white shadow-md rounded-lg">
+        <h1 class="text-3xl font-bold mb-4">{{ blog.title }}</h1>
+        <p class="text-gray-600 mb-4">{{ blog.description }}</p>
+        <hr>
+        <p class="text-gray-800 mb-4">{{ blog.content|safe }}</p>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lounge Learns</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/4.12.10/full.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        /* Ensure sidebar is fixed and does not push content */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 40; /* Ensure it stays above other content */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-open {
+            transform: translateX(0);
+        }
+
+        .content-wrapper {
+            transition: margin-left 0.3s ease-in-out;
+            height: 100vh; /* Full height of viewport */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* Desktop view: show sidebar permanently */
+        @media (min-width: 1024px) {
+            .sidebar {
+                transform: translateX(0); /* Always visible on desktop */
+            }
+
+            .content-wrapper {
+                margin-left: 16rem; /* Adjust based on sidebar width */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex h-screen lg:overflow-hidden relative">
+        <!-- Sidebar -->
+        <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white sidebar">
+            <div class="px-6 py-4">
+                <h2 class="text-2xl font-semibold text-white">Lounge Learns</h2>
+            </div>
+            <nav class="flex-1 px-6 py-4">
+                <ul class="space-y-4">
+                    <li>
+                        <a href="{% url 'dashboard:home' %}" class="flex items-center px-4 py-2 text-gray-200 transition-colors duration-300 transform rounded-md hover:bg-gray-800">
+                            <span class="mx-4 font-medium"><i class="bi bi-speedometer2"></i> Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'course:home' %}" class="flex items-center px-4 py-2 text-gray-200 transition-colors duration-300 transform rounded-md hover:bg-gray-800">
+                            <span class="mx-4 font-medium"><i class="bi bi-play-circle"></i> Courses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dashboard:users' %}" class="flex items-center px-4 py-2 text-gray-200 transition-colors duration-300 transform rounded-md hover:bg-gray-800">
+                            <span class="mx-4 font-medium"><i class="bi bi-people"></i> Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'blog:blogs' %}" class="flex items-center px-4 py-2 text-gray-200 transition-colors duration-300 transform rounded-md hover:bg-gray-800">
+                            <span class="mx-4 font-medium"><i class="bi bi-journal-richtext"></i> Blog</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- New item at the bottom -->
+        </div>
+
+        <!-- Content -->
+        <div id="content" class="flex flex-col flex-1 content-wrapper">
+            <header class="flex items-center justify-between px-6 py-4 bg-white shadow-md">
+                <button id="sidebar-toggle" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <h1 class="text-xl font-semibold text-gray-800">
+                    {% block headername %}Welcome to Lounge Learns{% endblock headername %}
+                </h1>
+
+                <!-- profile dropdown -->
+                <div class="dropdown dropdown-end bg-white">
+                    <div tabindex="0" role="button" class="btn flex items-center space-x-2 text-gray-800 hover:bg-blue-600">
+                        <!-- Iconka -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#1f2937">
+                            <path d="M12 12c3.313 0 6-2.687 6-6S15.313 0 12 0 6 2.687 6 6s2.687 6 6 6zm0 2c-4.418 0-8 3.582-8 8v1h16v-1c0-4.418-3.582-8-8-8z"/>
+                        </svg>
+                        
+                        <!-- Button text -->
+                        <!-- <span>Click</span> -->
+                    </div>
+                    <ul tabindex="0" class="bg-white dropdown-content menu rounded-box z-[1] w-52 p-2 shadow">
+                        <li><a href="{% url 'user:profile' %}" class="hover:bg-gray-700 p-2 rounded">Profile</a></li>
+                        <li><a href="{% url 'user:logout' %}" class="hover:bg-gray-700 p-2 rounded">Logout</a></li>
+                    </ul>
+                </div>
+            </header>
+
+            <main class="flex-1 p-6 overflow-y-auto">
+                {% block content %}
+                <!-- Your page content here -->
+                {% endblock %}
+            </main>
+        </div>
+
+        <!-- Overlay for closing sidebar when clicking outside -->
+        <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden"></div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const overlay = document.getElementById('overlay');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-open');
+            overlay.classList.toggle('hidden');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+                sidebar.classList.remove('sidebar-open');
+                overlay.classList.add('hidden');
+            }
+        });
+
+        // Prevent closing sidebar if clicking inside the sidebar
+        sidebar.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const colors = ['bg-blue-100', 'bg-green-100', 'bg-yellow-100', 'bg-purple-100', 'bg-pink-100'];
+            const buttonColors = ['bg-blue-500 hover:bg-blue-600', 'bg-green-500 hover:bg-green-600', 'bg-yellow-500 hover:bg-yellow-600', 'bg-purple-500 hover:bg-purple-600', 'bg-pink-500 hover:bg-pink-600'];
+
+            const colorItems = document.querySelectorAll('.color-item');
+
+            colorItems.forEach((item, index) => {
+                const colorClass = colors[index % colors.length];
+                const buttonClass = buttonColors[index % buttonColors.length];
+
+                // Set the background color for the item
+                item.classList.add(colorClass);
+
+                // Find the button and set its color if it exists
+                const button = item.querySelector('.button');
+                if (button) {
+                    button.classList.add(...buttonClass.split(" "));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

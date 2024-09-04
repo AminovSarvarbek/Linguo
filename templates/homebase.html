@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Linguo {% endblock title %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-800 text-white">
+
+    <nav class="bg-yellow-500 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <a class="text-2xl font-bold" href="{% url 'home' %}">Launge</a>
+            
+            <!-- Hamburger Button for Small Screens -->
+            <button id="menu-toggle" class="lg:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+    
+            <!-- Navigation Links -->
+            <ul id="menu" class="hidden lg:flex space-x-4">
+                <li><a class="hover:text-gray-200" href="{% url 'user:login' %}">Languages</a></li>
+                <li><a class="hover:text-gray-200" href="{% url 'user:login' %}">Courses</a></li>
+                <li><a class="hover:text-gray-200" href="{% url 'user:login' %}">Blog</a></li>
+                <li><a class="bg-gray-800 text-white px-3 py-2 rounded border-b-2 border-gray-700" href="{% url 'user:login' %}">Start Learning</a></li>
+            </ul>
+        </div>
+    
+        <!-- Mobile Menu (Hidden by default) -->
+        <ul id="mobile-menu" class="lg:hidden hidden flex-col space-y-4 mt-4">
+            <li><a class="hover:text-gray-200" href="{% url 'user:login' %}">Languages</a></li>
+            <li><a class="hover:text-gray-200" href="{% url 'user:login' %}">Courses</a></li>
+            <li><a class="hover:text-gray-200" href="{% url 'user:login' %}">Phrases</a></li>
+            <li><a class="hover:text-gray-200" href="{% url 'user:login' %}">Blog</a></li>
+            <li><a class="bg-gray-800 text-white px-3 py-2 rounded border-b-2 border-gray-700" href="{% url 'user:login' %}">Start Learning</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <footer class="bg-gray-800 text-gray-200 py-8 ">
+        <div class="container mx-auto flex flex-col items-center space-y-4">
+            <!-- Footer Links -->
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-yellow-500">About Us</a>
+                <a href="#" class="hover:text-yellow-500">Privacy Policy</a>
+                <a href="#" class="hover:text-yellow-500">Terms of Service</a>
+                <a href="#" class="hover:text-yellow-500">Contact</a>
+            </div>
+            
+            <!-- Social Media Icons -->
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-yellow-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.12 8.438 9.88v-6.993h-2.54v-2.885h2.54V9.578c0-2.512 1.492-3.899 3.777-3.899 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.242 0-1.63.771-1.63 1.563v1.864h2.773l-.443 2.885h-2.33V21.88C18.343 21.12 22 16.991 22 12z"/>
+                    </svg>
+                </a>
+                <a href="#" class="hover:text-yellow-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.12 8.438 9.88v-6.993h-2.54v-2.885h2.54V9.578c0-2.512 1.492-3.899 3.777-3.899 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.242 0-1.63.771-1.63 1.563v1.864h2.773l-.443 2.885h-2.33V21.88C18.343 21.12 22 16.991 22 12z"/>
+                    </svg>
+                </a>
+                <a href="#" class="hover:text-yellow-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 24 24">
+                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.12 8.438 9.88v-6.993h-2.54v-2.885h2.54V9.578c0-2.512 1.492-3.899 3.777-3.899 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.242 0-1.63.771-1.63 1.563v1.864h2.773l-.443 2.885h-2.33V21.88C18.343 21.12 22 16.991 22 12z"/>
+                    </svg>
+                </a>
+            </div>
+    
+            <!-- Copyright -->
+            <p class="text-sm text-gray-400">&copy; 2024 Launge. All rights reserved.</p>
+        </div>
+    </footer>
+    
+
+    <!-- script -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+    
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html>

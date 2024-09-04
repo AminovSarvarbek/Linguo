@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+    <div class="max-w-4xl mx-auto mt-10">
+        <div class="bg-white shadow-lg rounded-lg p-8">
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-semibold text-gray-800">Update Your Profile</h1>
+                <p class="text-gray-500">Edit your profile information</p>
+            </div>
+
+            <!-- Profile Update Form -->
+            <form method="POST">
+                {% csrf_token %}
+                
+                <!-- First Name -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-600 mb-1">First Name</label>
+                    <div class="flex items-center border rounded-lg bg-white p-2 shadow-sm">
+                        <i class="bi bi-person-fill text-gray-500 mr-3"></i>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" 
+                               class="w-full p-2 text-gray-800 bg-transparent focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Last Name</label>
+                    <div class="flex items-center border rounded-lg bg-white p-2 shadow-sm">
+                        <i class="bi bi-person-fill text-gray-500 mr-3"></i>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" 
+                               class="w-full p-2 text-gray-800 bg-transparent focus:outline-none">
+                    </div>
+                </div>
+                <!-- Save Button -->
+                <div class="text-center">
+                    <button type="submit" 
+                            class="inline-block px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow-lg transition">
+                        <i class="bi bi-save-fill mr-2"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% endblock content %}
